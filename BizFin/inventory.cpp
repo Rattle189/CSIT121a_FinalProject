@@ -166,6 +166,7 @@ void showInventoryScreen() {
         EDIT_VIEW
     };
 
+    // Default mode is LIST_VIEW
     Mode currentMode = LIST_VIEW;
 
     // ===== THIS IS THE PART WHERE IT DRAWS SHIT ON THE SCREEN! =====
@@ -175,6 +176,7 @@ void showInventoryScreen() {
     // HEADER
     auto headerWin = std::make_shared<tui::Window>(0, 0, 3, maxx, 1);
     headerWin->add(tui::header("Inventory Management"));
+    headerWin->setFocusable(false);
 
     // RIGHT PANEL CONTENT
     auto list = std::make_shared<InventoryList>(&inventory, &invState);
@@ -354,18 +356,15 @@ void showInventoryScreen() {
     // MAIN LOOP
     int ch; // ch short for choice
     while ((ch = getch()) != 'q') {
-
-        /* ===== Getting rid of this because this can cause unwanted behavior! =====
-        // ESC exits EDIT mode and saves
         if (currentMode == EDIT_VIEW && ch == 27) {
-            saveFormToItem(selectedIndex, selectedIndex < 0);
+            // saveFormToItem(selectedIndex, selectedIndex < 0);
 
             currentMode = LIST_VIEW;
 
             rightWin->setElements({ list });
 
             menuWin->setElements({ buildEditMenu() });
-        } */
+        }
 
         ui.getLayout().handleInput(ch);
         ui.getLayout().draw();

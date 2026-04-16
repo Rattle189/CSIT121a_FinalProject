@@ -10,9 +10,9 @@
 #define MENUS_H
 
 #ifdef _WIN32
-#include <curses.h>
+    #include <curses.h>
 #else
-#include <ncurses.h>
+    #include <ncurses.h>
 #endif
 
 #include <vector>
@@ -209,12 +209,16 @@ namespace tui {
         int colorPair = 0;
         std::vector<ElementPtr> elements;
         int focusedElement = 0;
+        bool focusable = true;
 
     public:
         Window(int _y, int _x, int _h, int _w, int color = 0)
             : x(_x), y(_y), w(_w), h(_h), colorPair(color) {
             win = newwin(h, w, y, x);
         }
+
+        void setFocusable(bool f) { focusable = f; }
+        bool isFocusable() const { return focusable; }
 
         ~Window() { delwin(win); }
 
@@ -284,7 +288,13 @@ namespace tui {
         }
 
         void nextFocus() {
-            focusedIndex = (focusedIndex + 1) % windows.size();
+            if (windows.empty()) return;
+
+            int start = focusedIndex;
+
+            do {
+                focusedIndex = (focusedIndex + 1) % windows.size();
+            } while (!windows[focusedIndex]->isFocusable() && focusedIndex != start);
         }
 
         void draw() {
@@ -293,12 +303,18 @@ namespace tui {
             }
         }
 
+        void clear() {
+            windows.clear();
+            focusedIndex = 0;
+        }
+
         void handleInput(int ch) {
             if (ch == '\t') { // global next window (like old POS)
                 nextFocus();
                 return;
             }
-            windows[focusedIndex]->handleInput(ch);
+            if (windows[focusedIndex]->isFocusable())
+                windows[focusedIndex]->handleInput(ch);
         }
     };
 
@@ -361,8 +377,14 @@ namespace tui {
 
 } // namespace tui
 
-// Make other menus available
+// Make other screens (dunno why I call them menus in the code) available
 void showMainMenu();
-void showTestMenu();
+
+// Some test or example screens on how to use the TUI for yourself!
+void showTuiDemos();
+void tuiDemo1();
+void tuiDemo2();
+void tuiDemo3();
+void tuiDemo4();
 
 #endif

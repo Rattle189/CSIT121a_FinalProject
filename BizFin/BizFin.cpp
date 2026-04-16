@@ -13,5 +13,5 @@
 const float valueAddedTax = 0.15;
 
 int main() {
-    showInventoryScreen();
+    showMainMenu();
 }
