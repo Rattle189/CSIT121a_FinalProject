@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="BizFin/BizFin.vcxproj" Id="1f65e6b4-3cb0-4d4a-8a34-e010e3bcc7c1" />
+</Solution>
