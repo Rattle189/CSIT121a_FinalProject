@@ -5,8 +5,6 @@
  * main.cpp - This file contains the main loop
  */
 #include "menus.hpp"
-#include "inventory.hpp"
-#include "employees.hpp"
 
 // not using namespace std;
 

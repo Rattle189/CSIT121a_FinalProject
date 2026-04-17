@@ -1,0 +1,4 @@
+1 "Carter Mackay" 800 44
+2 "Jessica Mannings" 1200 40
+3 "Ian Tribly" 1600.5 36
+4 "Ray Jay AJ" 1050.5 42

@@ -120,13 +120,13 @@ void saveInventory(const std::string& fileName, const std::vector<InventoryItem>
 }
 
 // CRUD (Create, Read, Update, Delete) helpers
-void addItem(std::vector<InventoryItem>& inventory, const InventoryItem& item) {
-    inventory.push_back(item);
+void addItem(std::vector<InventoryItem>& employees, const InventoryItem& item) {
+    employees.push_back(item);
 }
 
-void removeItem(std::vector<InventoryItem>& inventory, int index) {
-    if (index >= 0 && index < (int)inventory.size()) {
-        inventory.erase(inventory.begin() + index);
+void removeItem(std::vector<InventoryItem>& employees, int index) {
+    if (index >= 0 && index < (int)employees.size()) {
+        employees.erase(employees.begin() + index);
     }
 }
 
@@ -280,15 +280,14 @@ void showInventoryScreen() {
                 }
             }
         );
-        };
+    };
 
     buildListMenu = [&]() {
         return std::make_shared<tui::VerticalMenu>(
             std::vector<std::string>{
             "Add New Item",
             "Edit Selected Item",
-            "Remove Selected Item",
-            "Return to Main Menu"
+            "Remove Selected Item"
         },
             [&](int choice) {
 
@@ -347,11 +346,17 @@ void showInventoryScreen() {
     // menuWin->add(buildListMenu()); <--- Deprecated approach
     menuWin->setElements({ buildListMenu() });
 
+    // FOOTER
+    auto footerWin = std::make_shared<tui::Window>(maxy - 1, 0, 1, maxx, 4);
+    footerWin->add(tui::header("Q | Return to Main Menu"));
+    footerWin->setFocusable(false);
+
     // LAYOUT
     auto& layout = ui.getLayout();
     layout.addWindow(headerWin);
     layout.addWindow(menuWin);
     layout.addWindow(rightWin);
+    layout.addWindow(footerWin);
 
     // MAIN LOOP
     int ch; // ch short for choice

@@ -13,17 +13,17 @@
 struct Employee {
     int id;
     std::string name;
-    float price;
-    float quantity;
+    float hourlyRate;
+    float hoursWorked;
 };
 
 // Repository-style API
-void loadInventory(const std::string& fileName, std::vector<Employee>& inventory);
-void saveInventory(const std::string& fileName, const std::vector<Employee>& inventory);
+void loadEmployeesData(const std::string& fileName, std::vector<Employee>& employees);
+void saveEmployeesData(const std::string& fileName, const std::vector<Employee>& employees);
 
 // CRUD helpers
-void addItem(std::vector<Employee>& inventory, const Employee& item);
-void removeItem(std::vector<Employee>& inventory, int index);
+void addItem(std::vector<Employee>& employees, const Employee& item);
+void removeItem(std::vector<Employee>& employees, int index);
 
 void showEmployeesScreen();
 

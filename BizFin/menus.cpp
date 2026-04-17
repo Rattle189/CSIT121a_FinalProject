@@ -9,6 +9,7 @@
 #include "menus.hpp" // Let's externalize ourself
 #include "inventory.hpp"
 #include "employees.hpp"
+#include "sales.hpp"
 
 void showMainMenu() {
     tui::UI ui;
@@ -22,7 +23,7 @@ void showMainMenu() {
     mainMenuHeader->add(tui::header("BizFin - Business Management Software"));
     mainMenuHeader->setFocusable(false);
     
-    std::vector<std::string> availableSystems = { "Inventory Management", "Employee Management", "Sales History", "View Demo Menus", "Exit BizFin" };
+    std::vector<std::string> availableSystems = { "Inventory Management", "Employee Management", "Sales History", "Exit BizFin" };
 
     auto mainMenuList = std::make_shared<tui::Window>(midY, midX, midH, midW, 2);
     mainMenuList->add(tui::leftVerticalMenu(availableSystems, [&](int choice) {
@@ -44,17 +45,21 @@ void showMainMenu() {
                 break;
             case 1:
                 endwin();
+                showEmployeesScreen();
+                showMainMenu();
                 break;
             case 2:
                 endwin();
+                showSalesScreen();
+                showMainMenu();
                 break;
-            case 3:
+            case 3: // EXIT
+                endwin();
+                std::exit(0); 
+            case 4: // DEBUG MENU
                 endwin();
                 showTuiDemos();
                 showMainMenu();
-                std::exit(0); 
-            case 4:
-                endwin();
                 std::exit(0); // return 0 basically
             default:
                 std::cout << "\nSomething went wrong! The user picked an invalid selection in the main menu.";
