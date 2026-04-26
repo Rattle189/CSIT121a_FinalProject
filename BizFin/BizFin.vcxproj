@@ -24,6 +24,7 @@
     <ProjectGuid>{1f65e6b4-3cb0-4d4a-8a34-e010e3bcc7c1}</ProjectGuid>
     <RootNamespace>BizFin</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>MyBiz</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -133,7 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BizFin.cpp" />
+    <ClCompile Include="MyBiz.cpp" />
     <ClCompile Include="employees.cpp" />
     <ClCompile Include="inventory.cpp" />
     <ClCompile Include="menus.cpp" />
@@ -144,6 +145,11 @@
     <ClInclude Include="inventory.hpp" />
     <ClInclude Include="menus.hpp" />
     <ClInclude Include="sales.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="employees.txt" />
+    <Text Include="inventory.txt" />
+    <Text Include="sales.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

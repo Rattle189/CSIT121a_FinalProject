@@ -1,5 +1,5 @@
 /* CSIT 121a - Computer Programming 2 (LAB)
- * BizFin Tracker & Calculator System
+ * MyBiz — All-In-One Business Solution
  * Group 2 Final Output
  * Created by: Christian M. Lañada (0107-1325-24)
  * menus.cpp - This file contains the functions that call upon the TUI
@@ -19,11 +19,18 @@ void showMainMenu() {
     // calculations for dead center on screen/terminal (please put this in a helper)
     int midH = maxy / 5, midW = maxx / 5, midY = (maxy - midH) / 2, midX = (maxx - midW) / 2;
 
+    if (maxx < 100 || maxy < 30) {
+        clear();
+        mvprintw(0, 0, "Please resize your terminal to at least 100x30.");
+        refresh();
+        getch();
+    }
+
     auto mainMenuHeader = std::make_shared<tui::Window>(0, 0, 2, maxx, 3);
-    mainMenuHeader->add(tui::header("BizFin - Business Management Software"));
+    mainMenuHeader->add(tui::header("MyBiz - All-In-One Business Solution"));
     mainMenuHeader->setFocusable(false);
     
-    std::vector<std::string> availableSystems = { "Inventory Management", "Employee Management", "Sales History", "Exit BizFin" };
+    std::vector<std::string> availableSystems = { "Inventory Management", "Employee Management", "Sales History", "Exit MyBiz" };
 
     auto mainMenuList = std::make_shared<tui::Window>(midY, midX, midH, midW, 2);
     mainMenuList->add(tui::leftVerticalMenu(availableSystems, [&](int choice) {
@@ -82,6 +89,11 @@ void showMainMenu() {
     int ch;
     while ((ch = getch())) {
 
+        if (ch == KEY_RESIZE) {
+            ui.onResize();
+            continue;
+        }
+
         ui.getLayout().handleInput(ch);
         ui.getLayout().draw();
     }
@@ -126,7 +138,7 @@ void showTuiDemos() {
             endwin();
             break;
         default:
-            std::cout << "\nSomething went wrong! The user picked an invalid selection in the demo selection menu..";
+            std::cout << "\nSomething went wrong! The user picked an invalid selection in the demo selection menu.";
             endwin();
             std::exit(1); // return 1 basically
         }

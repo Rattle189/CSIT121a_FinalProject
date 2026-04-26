@@ -1,5 +1,5 @@
 /* CSIT 121a - Computer Programming 2 (LAB)
- * BizFin Tracker & Calculator System
+ * MyBiz — All-In-One Business Solution
  * Group 2 Final Output
  * Created by: Christian M. Lañada (0107-1325-24)
  * main.cpp - This file contains the main loop
@@ -10,6 +10,6 @@
 
 const float valueAddedTax = 0.15;
 
-int main() {
+int main(int argc, char* argv[]) {
     showMainMenu();
 }

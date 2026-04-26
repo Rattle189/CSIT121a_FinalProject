@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BizFin.cpp">
+    <ClCompile Include="MyBiz.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="menus.cpp">
@@ -44,5 +44,16 @@
     <ClInclude Include="sales.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="employees.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="sales.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="inventory.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

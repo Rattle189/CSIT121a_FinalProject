@@ -4,22 +4,33 @@
  * Created by: Christian M. Lañada (0107-1325-24)
  * inventory.cpp - This handles the inventory system.
  */
+
+/* inventory.cpp is used as the template for the other screns - sales.cpp and employees.cpp
+ * are basically copies of this file (and any other future menus). I haven't figured out a way
+ * to completely compartmentalize /everything/ into menus.cpp or something and just have the
+ * different files call and make up their own version of a parent. */
+
+/* Also... there's a crap ton of vectors used here and throughout the program. I haven't
+ * done any exclusive memory management yet */
+
 #include <iostream>
-#include <fstream> // for file I/O operations
+#include <fstream>
 #include <string>
-#include <vector> // for dynamically allocated arrays, used a crap ton here
+#include <vector>
 #include "menus.hpp"
 #include "inventory.hpp"
 
 // not using namespace std;
 
+/* This basically holds the toggle whether the screen is on
+ * VIEW_MODE or EDIT_MODE */
 struct InventoryState {
     int selectedIndex = 0;
 };
 
+// Inventory List class.
 class InventoryList : public tui::Element {
     std::vector<InventoryItem>* items;
-    // int selected = 0; <-- Deprecated in favor of InventoryState
     InventoryState* state;
 
 public:
@@ -29,9 +40,9 @@ public:
     }
 
     void draw(WINDOW* win) override {
-        // Header
-        mvwprintw(win, 1, 1, "ID   Name        Price     Qty");
-        mvwprintw(win, 2, 1, "--------------------------------");
+        // Inventory list header
+        mvwprintw(win, 1, 1, "ID   Name                                         Price     Qty");
+        mvwprintw(win, 2, 1, "------------------------------------------------------------------");
 
         for (size_t i = 0; i < items->size(); ++i) {
             auto& item = (*items)[i];
@@ -42,7 +53,7 @@ public:
             if (focused && (int)i == state->selectedIndex)
                 wattron(win, A_BOLD);      // bolds text so the user doesn't get lost
 
-            mvwprintw(win, i + 3, 1, "%-4d %-10s %-9.2f %-6.2f",
+            mvwprintw(win, i + 3, 1, "%-4d %-44s %-9.2f %-6.2f",
                 item.id,
                 item.name.c_str(),
                 item.price,
@@ -56,6 +67,9 @@ public:
         }
     }
 
+    /* This has its own input handler thing because of the state system
+     * I should probably get around to integrating that state system into
+     * menus.hpp when I have the time so that less reused code */
     void handleInput(int ch) override {
         if (!focused) return;
 
@@ -155,6 +169,7 @@ void showInventoryScreen() {
     InventoryState invState;
     invState.selectedIndex = 0;
 
+    // I honestly forgot what this is for lol. I think this is for the menu selections
     int selectedIndex = -1;
 
     // This boolean flag is to make sure the ADD and EDIT features don't mix each other up
@@ -210,8 +225,7 @@ void showInventoryScreen() {
             item.quantity = std::stof(fields[3]->getValue());
         }
         catch (...) {
-            /* Basic safety fallback, aborts the operation if the
-               user inputs stupid shit. */
+            std::cout << "\nSomething went wrong saving the inventory data.";
             return;
         }
 
@@ -248,6 +262,8 @@ void showInventoryScreen() {
     std::function<std::shared_ptr<tui::VerticalMenu>()> buildListMenu;
     std::function<std::shared_ptr<tui::VerticalMenu>()> buildEditMenu;
 
+    /* So this is out of our lesson plan, but these particular two sections required the use
+     * of a lambda (er, anonymous functions) for the changing of the left-side menu */
     buildEditMenu = [&]() {
         return std::make_shared<tui::VerticalMenu>(
             std::vector<std::string>{
@@ -343,7 +359,6 @@ void showInventoryScreen() {
         };
 
     // Mandatory initialization of menuWin's contents
-    // menuWin->add(buildListMenu()); <--- Deprecated approach
     menuWin->setElements({ buildListMenu() });
 
     // FOOTER

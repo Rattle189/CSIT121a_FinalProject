@@ -1,5 +1,5 @@
-/* CSIT 121a - Computer Programming 2 (LAB)
- * BizFin Tracker & Calculator System
+    /* CSIT 121a - Computer Programming 2 (LAB)
+ * MyBiz — All-In-One Business Solution
  * Group 2 Final Output
  * Created by: Christian M. Lañada (0107-1325-24)
  * menus.hpp - This file contains the TUI (terminal/text user interface)
@@ -85,6 +85,24 @@ namespace tui {
             }
         }
     };
+
+    // Search bar class.
+    /*
+    class SearchBar : public Element {
+        std::string term;
+    public:
+        SearchBar(std::string& term) {
+            // Search bar logic
+        }
+
+        void sortAlphabetically() override {
+            // Sort resu
+        }
+        void onChange() override {
+            // Change the contents on change
+        }
+    }
+}; */
 
     // Field class. We don't have WinForms or a proper GUI so this is the way to go for data entry.
     class Field : public Element {
@@ -354,10 +372,38 @@ namespace tui {
 
         void loop() {
             int ch;
+
+            // Initial draw
+            layout.draw();
+
             while ((ch = getch()) != 'q') {
+
+                // Detect terminal resize
+                if (ch == KEY_RESIZE) {
+                    onResize();
+                    continue;
+                }
+
                 layout.handleInput(ch);
                 layout.draw();
             }
+        }
+
+        /* This part is responsible for re-drawing the elements on screen
+         * should the user choose to resize the terminal window for interface
+         * responsiveness. */
+        void onResize() {
+            // Tell curses to update internal structures
+        #ifdef _WIN32
+            resize_term(0, 0);   // PDCurses
+        #else
+            endwin();
+            refresh();
+            clear();
+        #endif
+
+        // Force redraw of everything
+        layout.draw();
         }
     };
 
@@ -374,6 +420,10 @@ namespace tui {
     inline ElementPtr form(const std::vector<std::string>& fields) {
         return std::make_shared<Form>(fields);
     }
+
+    /* inline ElementPtr searchBar(const std::string& term) {
+        return std::make_shared<SearchBar>(term);
+    } */
 
 } // namespace tui
 

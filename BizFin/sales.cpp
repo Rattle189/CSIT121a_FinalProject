@@ -1,5 +1,5 @@
 /* CSIT 121a - Computer Programming 2 (LAB)
- * BizFin Tracker & Calculator System
+ * MyBiz — All-In-One Business Solution
  * Group 2 Final Output
  * Created by: Christian M. Lañada (0107-1325-24)
  * sales.cpp - This file contains the functions that call upon the TUI
@@ -15,7 +15,7 @@
 
 std::time_t now = std::time(nullptr); // pre-initialize the value of time
 
-/* Because Microsoft considers the localtime variable/function to be unsafe and recommensd using localtime_s
+/* Because Microsoft considers the localtime variable/function to be unsafe and recommends using localtime_s
  * otherwise the MSVC compiler will complain, this helper function fixes that issue so that the program will
  * compile just fine both on Windows and Linux systems. */
 void safeLocalTime(std::tm& out, const std::time_t& t) {
@@ -178,7 +178,7 @@ void loadSalesData(const std::string& fileName, std::vector<Sale>& sales) {
 
     Sale s;
     while (file >> s.id >> s.itemId >> s.employeeId
-        >> s.quantity >> s.total >> s.timestamp) {
+        >> s.quantity >> s.timestamp) {
         sales.push_back(s);
     }
 }
@@ -196,7 +196,6 @@ void saveSalesData(const std::string& fileName, const std::vector<Sale>& sales) 
             << s.itemId << " "
             << s.employeeId << " "
             << s.quantity << " "
-            << s.total << " "
             << s.timestamp << "\n";
     }
 }
@@ -276,6 +275,7 @@ void showSalesScreen() {
             s.timestamp = std::time(nullptr); // auto timestamp
         }
         catch (...) {
+            std::cout << "\nSomething went wrong in attempting to load sales data.";
             return;
         }
 
@@ -301,7 +301,7 @@ void showSalesScreen() {
         return std::make_shared<tui::VerticalMenu>(
             std::vector<std::string>{
             "Save Sale",
-                "Cancel"
+            "Cancel"
         },
             [&](int choice) {
                 if (choice == 0) {
